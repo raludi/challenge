@@ -2,60 +2,70 @@ import React, { Component } from 'react';
 import FontAwesome from 'react-fontawesome';
 import styled from 'styled-components';
 import theme from '../../theme';
+import { connect } from 'react-redux';
+import { getFilters, actions as filterActions } from '../../redux/modules/filters/filters';
+import { actions as transactionsActions } from '../../redux/modules/transactions/transactions';
+import { bindActionCreators } from 'redux';
 
 const HeaderStyled = styled.div`
-display: flex;
-align-items: center;
-justify-content: space-between;
-line-height: 38px;
-position: relative;
-background-color: #fff;
-border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  line-height: 2em;
+  position: relative;
+  background-color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  font-weight: ${theme.weights.bold}
+  border: 1px solid ${theme.colors.topaz}
+  border-bottom: ${props => props.listOpen ? 'none': `1px solid ${theme.colors.topaz}` };
 `
+
 const TitleStyled = styled.div`
-margin: 2px 20px;
-color: ${theme.colors.cobalt}
-margin-right: 30px;
+  margin: 2px 20px;
+  color: ${theme.colors.cobalt}
+  margin-right: 30px;
+  white-space: nowrap;
+  overflow: hidden;
 `
+
 const ListStyled = styled.ul`
-z-index: 10;
-width: inherit;
-position: absolute;
-border: 1px solid #dfdfdf;
-border-top: none;
-border-bottom-right-radius: 3px;
-border-bottom-left-radius: 3px;
-background-color: #fff;
-padding: 15px 0;
-max-height: 200px;
-width: inherit;
-overflow-y: auto;
-border-radius: 10px;
+  z-index: 10;
+  width: 100%;
+  position: absolute;
+  background-color: #fff;
+  padding: 15px 0;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid ${theme.colors.topaz}
+  border-top: none;
 `
 
 const ItemStyled = styled.li`
-    width: 100%;
-    padding: 8px 10px;
-    line-height: 1.6rem;
-    cursor: default;
-    display: inline-block;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: ${theme.colors.cobalt};
-    &.selected {
-        color: ${theme.colors.cobalt};
-        background-color: ${theme.colors.lightGray};
-    }
-    &:hover {
-        color: ${theme.colors.cobalt};
-        background-color: ${theme.colors.lightGray};
-    }
+  width: 100%;
+  padding: 8px 10px;
+  line-height: 1.6rem;
+  cursor: default;
+  display: inline-block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: ${theme.colors.cobalt};
+  &.selected {
+      color: ${theme.colors.cobalt};
+      background-color: ${theme.colors.lightGray};
+      font-weight: ${theme.weights.bold}
+  }
+  &:hover {
+      color: ${theme.colors.cobalt};
+      background-color: ${theme.colors.lightGray};
+  }
 `
 
 class Dropdown extends Component{
+
   constructor(props){
     super(props)
     this.state = {
@@ -67,12 +77,10 @@ class Dropdown extends Component{
   componentDidUpdate(){
     const { listOpen } = this.state
     setTimeout(() => {
-      if(listOpen){
+      if(listOpen)
         window.addEventListener('click', this.close)
-      }
-      else{
+      else 
         window.removeEventListener('click', this.close)
-      }
     }, 0)
   }
 
@@ -80,8 +88,16 @@ class Dropdown extends Component{
     window.removeEventListener('click', this.close)
   }
 
-
-  selectItem(title, id, stateKey){
+  close = () => {
+    this.setState({
+      listOpen: false
+    })
+  }
+  
+  selectItem(idx, selected){
+    const { id, filterAction, transaction} = this.props;
+    filterAction.updateFilter({id, idx, selected});
+    transaction.filterTransactions()
     this.setState({
       listOpen: false
     })
@@ -94,22 +110,35 @@ class Dropdown extends Component{
   }
 
   render(){
-    const {list, width} = this.props
-    const {listOpen, headerTitle} = this.state
+    const { filters } = this.props
+    const { listOpen, headerTitle } = this.state
     return(
-        <div style={{margin: 3, width}}>
-        <HeaderStyled onClick={() => this.toggleList()}>
-            <TitleStyled>{headerTitle}</TitleStyled>
-               <i style={{marginRight: 10, color: theme.colors.cobalt}} className={`fas fa-angle-${listOpen ? 'up' : 'down'}`}></i>         
-        </HeaderStyled>
-        {listOpen && <ListStyled onClick={e => e.stopPropagation()}>
-          {list.map((item)=> (
-            <ItemStyled key={item.id} onClick={() => this.selectItem(item.title, item.id, item.key)}>{item.title} {item.selected && <FontAwesome name="check"/>}</ItemStyled>
-          ))} 
-        </ListStyled>}
-      </div>
+        <div style={{margin: 3, position: 'relative'}}>
+          <HeaderStyled listOpen={listOpen} onClick={() => this.toggleList()}>
+              <TitleStyled>{headerTitle}</TitleStyled>
+                <i style={{marginRight: 10, color: theme.colors.cobalt}} className={`fas fa-angle-${listOpen ? 'up' : 'down'}`}></i>         
+          </HeaderStyled>
+          {listOpen && <ListStyled onClick={e => e.stopPropagation()}>
+            {filters.map((item, idx)=> (
+              <ItemStyled selected={item.selected} listOpen={listOpen} key={idx} onClick={() => this.selectItem(idx, item.selected)}>{item.title} {item.selected && <FontAwesome name="check"/>}</ItemStyled>
+            ))} 
+          </ListStyled>}
+        </div>
     )
   }
 }
 
-export default Dropdown
+const mapStateToProps = (state, ownProps) => {
+  return {
+    filters: getFilters(state, ownProps.id)
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+     filterAction: bindActionCreators(filterActions, dispatch),
+     transaction: bindActionCreators(transactionsActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dropdown)

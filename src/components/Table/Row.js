@@ -20,10 +20,6 @@ class Row extends Component {
         open: false
     }
 
-    constructor(props) {
-        super(props)
-    }
-
     handleClick = () => {
         console.log('row clicked')
         this.setState({ open: !this.state.open })

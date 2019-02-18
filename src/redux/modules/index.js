@@ -1,7 +1,9 @@
 
 import { combineReducers } from 'redux';
-import filterReducer from './filters/filters';
+import filters from './filters/filters';
+import transactions from './transactions/transactions';
 
 export default combineReducers({
-    filterReducer
+    filters,
+    transactions
   })

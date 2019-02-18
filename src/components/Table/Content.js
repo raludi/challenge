@@ -2,6 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import theme from '../../theme';
 
+export const WrapperStyled = styled.div`
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    transition: height 2s ease-in;     
+`
+
 export const ContentStyled = styled.div`
     background-color: ${theme.colors.lightGray};
     padding: 20px;
@@ -28,24 +35,24 @@ export const LabelGroup = styled.div`
 
 
 const Content = (props) => (
-    <div style={{display: 'flex', flexDirection: 'row'}}>
+    <WrapperStyled>
         <ContentStyled>
-            <LabelStyled style={{width: '25%', color: theme.colors.cobalt}}>ID: </LabelStyled>
-            <LabelStyled style={{width: '75%'}}>7b12415125-a001-53267-a76585-jjft65ufnrtnty</LabelStyled>
-            <LabelStyled style={{width: '25%', color: theme.colors.cobalt}}>Tracking code: </LabelStyled>
-            <LabelStyled style={{width: '75%'}}>24c22a09-5141-5436-1532-3153151535678</LabelStyled>
-            <LabelStyled style={{width: '25%', color: theme.colors.cobalt}}>Brand ID: </LabelStyled>
-            <LabelStyled style={{width: '75%'}}>1060</LabelStyled>
+            <LabelStyled primary={true}>ID: </LabelStyled>
+            <LabelStyled>7b12415125-a001-53267-a76585-jjft65ufnrtnty</LabelStyled>
+            <LabelStyled primary={true}>Tracking code: </LabelStyled>
+            <LabelStyled>24c22a09-5141-5436-1532-3153151535678</LabelStyled>
+            <LabelStyled primary={true}>Brand ID: </LabelStyled>
+            <LabelStyled>1060</LabelStyled>
         </ContentStyled>
         <ContentStyled>
-            <LabelStyled style={{width: '25%', color: theme.colors.cobalt}}>First 6 digits: </LabelStyled>
-            <LabelStyled style={{width: '75%'}}>378282 XXXX</LabelStyled>
-            <LabelStyled style={{width: '25%', color: theme.colors.cobalt}}>Expiry month: </LabelStyled>
-            <LabelStyled style={{width: '75%'}}>03</LabelStyled>
-            <LabelStyled style={{width: '25%', color: theme.colors.cobalt}}>Expiry year: </LabelStyled>
-            <LabelStyled style={{width: '75%'}}>2020</LabelStyled>
+            <LabelStyled primary={true}>First 6 digits: </LabelStyled>
+            <LabelStyled>378282 XXXX</LabelStyled>
+            <LabelStyled primary={true}>Expiry month: </LabelStyled>
+            <LabelStyled>03</LabelStyled>
+            <LabelStyled primary={true}>Expiry year: </LabelStyled>
+            <LabelStyled>2020</LabelStyled>
        </ContentStyled>
-    </div>
+    </WrapperStyled>
 )
 
 

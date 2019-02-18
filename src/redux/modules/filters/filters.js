@@ -1,35 +1,33 @@
 
 import types from './types';
+import { createSelector } from 'reselect';
+import { initialState } from './initialState';
 
-const initialState = {
-    filters: []
-}
 
-export default filterReducer = (state = initialState, { type, payload }) => {
+const filters = (state = initialState, { type, payload }) => {
     switch(type) {
-        case types.ADD_FILTER: 
+        case types.UPDATE_FILTER: 
             return {
                 ...state,
-                
+                ...state[payload.id][payload.idx].selected = !payload.selected
             }
-        case types.REMOVE_FILTER: 
+        default:
             return {
                 ...state
-            }
+            };
     }
 }
 
 export const actions = {
-    addFilter = (filter) => {
+    updateFilter(filter) {
         return {
-            type: types.ADD_FILTER,
+            type: types.UPDATE_FILTER,
             payload: filter
         }
     },
-    removeFilter = (filter) => {
-        return {
-            type: types.REMOVE_FILTER,
-            payload: filter
-        }
-    }
 }
+
+const filterId = (state, id) => state.filters[id] || initialState;
+export const getFilters = createSelector(filterId, filterState => filterState);
+
+export default filters;
