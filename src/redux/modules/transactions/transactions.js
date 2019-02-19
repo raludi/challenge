@@ -29,9 +29,9 @@ export const actions = {
             })
         }
     },
-    filterTransactions() {
+    filterTransactions(filters) {
         return dispatch => {
-            return filterTransactions().then((response) => {
+            return filterTransactions(filters).then((response) => {
                 dispatch({
                     type: types.GET_DATA,
                     payload: response

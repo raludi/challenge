@@ -6,6 +6,7 @@ import Row from './Table/Row';
 import Table from './Table/Table';
 import Content from './Table/Content';
 import Column from './Table/Column';
+import Dropdown from './Dropdown/Dropdown';
 
 export { 
     Button,
@@ -13,5 +14,6 @@ export {
     Row,
     Content,
     Table,
-    Column
+    Column,
+    Dropdown
 }

@@ -28,6 +28,8 @@ export const actions = {
 }
 
 const filterId = (state, id) => state.filters[id] || initialState;
+const filter = (state) => state.filters || initialState;
+export const getAllFilters = createSelector(filter, filterState => filterState); 
 export const getFilters = createSelector(filterId, filterState => filterState);
 
 export default filters;

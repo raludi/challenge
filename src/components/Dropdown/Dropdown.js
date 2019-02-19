@@ -3,7 +3,7 @@ import FontAwesome from 'react-fontawesome';
 import styled from 'styled-components';
 import theme from '../../theme';
 import { connect } from 'react-redux';
-import { getFilters, actions as filterActions } from '../../redux/modules/filters/filters';
+import { getFilters, getAllFilters, actions as filterActions } from '../../redux/modules/filters/filters';
 import { actions as transactionsActions } from '../../redux/modules/transactions/transactions';
 import { bindActionCreators } from 'redux';
 
@@ -95,11 +95,17 @@ class Dropdown extends Component{
   }
   
   selectItem(idx, selected){
-    const { id, filterAction, transaction} = this.props;
+    const { id, filterAction, transaction, allFilters} = this.props;
     filterAction.updateFilter({id, idx, selected});
-    transaction.filterTransactions()
+    const finalArray = []
+    for (var i in allFilters) {
+      const current = allFilters[i].filter((value) => value.selected).map((value) => value.title)
+      finalArray.push(current)
+    }
+
+    transaction.filterTransactions(finalArray)
     this.setState({
-      listOpen: false
+      listOpen: true
     })
   }
 
@@ -130,7 +136,8 @@ class Dropdown extends Component{
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    filters: getFilters(state, ownProps.id)
+    filters: getFilters(state, ownProps.id),
+    allFilters: getAllFilters(state)
   }
 }
 

@@ -9,7 +9,8 @@ export const TableStyled = styled.div`
     display:flex;
     flex-direction: column;
     margin: 15px;
-    min-width: 840px;  
+    min-width: 840px;
+    max-height: 600px;
 `
 
 const Table = ({ headers, data}) => (

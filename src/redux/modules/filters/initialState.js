@@ -20,7 +20,7 @@ export const initialState = {
             selected: false
         },
         {
-            title: 'GBP',
+            title: 'JPY',
             selected: false
         }
     ]
