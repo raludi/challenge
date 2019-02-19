@@ -70,7 +70,6 @@ class Dropdown extends Component{
     super(props)
     this.state = {
       listOpen: false,
-      headerTitle: this.props.title
     }
   }
 
@@ -116,12 +115,12 @@ class Dropdown extends Component{
   }
 
   render(){
-    const { filters } = this.props
-    const { listOpen, headerTitle } = this.state
+    const { filters, title } = this.props
+    const { listOpen } = this.state
     return(
         <div style={{margin: 3, position: 'relative'}}>
           <HeaderStyled listOpen={listOpen} onClick={() => this.toggleList()}>
-              <TitleStyled>{headerTitle}</TitleStyled>
+              <TitleStyled>{title}</TitleStyled>
                 <i style={{marginRight: 10, color: theme.colors.cobalt}} className={`fas fa-angle-${listOpen ? 'up' : 'down'}`}></i>         
           </HeaderStyled>
           {listOpen && <ListStyled onClick={e => e.stopPropagation()}>

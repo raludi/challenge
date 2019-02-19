@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import theme from '../../theme';
-import Content from './Content';
 
 export const RowStyled = styled.div`
     display: flex;
@@ -21,7 +20,6 @@ class Row extends Component {
     }
 
     handleClick = () => {
-        console.log('row clicked')
         this.setState({ open: !this.state.open })
     }
 

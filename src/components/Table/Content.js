@@ -34,23 +34,23 @@ export const LabelGroup = styled.div`
 `
 
 
-const Content = (props) => (
+const Content = ({ data }) => (
     <WrapperStyled>
         <ContentStyled>
             <LabelStyled primary={true}>ID: </LabelStyled>
-            <LabelStyled>7b12415125-a001-53267-a76585-jjft65ufnrtnty</LabelStyled>
+            <LabelStyled>{data.id}</LabelStyled>
             <LabelStyled primary={true}>Tracking code: </LabelStyled>
-            <LabelStyled>24c22a09-5141-5436-1532-3153151535678</LabelStyled>
+            <LabelStyled>{data.trackingCode}</LabelStyled>
             <LabelStyled primary={true}>Brand ID: </LabelStyled>
-            <LabelStyled>1060</LabelStyled>
+            <LabelStyled>{data.brandId}</LabelStyled>
         </ContentStyled>
         <ContentStyled>
             <LabelStyled primary={true}>First 6 digits: </LabelStyled>
-            <LabelStyled>378282 XXXX</LabelStyled>
+            <LabelStyled>{`${data.card.firstSixDigits} XXXX`}`</LabelStyled>
             <LabelStyled primary={true}>Expiry month: </LabelStyled>
-            <LabelStyled>03</LabelStyled>
+            <LabelStyled>{data.card.expiryMonth}</LabelStyled>
             <LabelStyled primary={true}>Expiry year: </LabelStyled>
-            <LabelStyled>2020</LabelStyled>
+            <LabelStyled>{data.card.expiryYear}</LabelStyled>
        </ContentStyled>
     </WrapperStyled>
 )
